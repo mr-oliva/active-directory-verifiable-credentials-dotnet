@@ -1,14 +1,14 @@
 [CmdletBinding()]
-param(    
+param(
     [Parameter(Mandatory=$False, HelpMessage='Tenant ID (This is a GUID which represents the "Directory ID" of the AzureAD tenant into which you want to create the apps')][string] $tenantId
 )
 
 # Pre-requisites
-if ($null -eq (Get-Module -ListAvailable -Name "Az.Accounts")) {  
-    Install-Module -Name "Az.Accounts" -Scope CurrentUser 
+if ($null -eq (Get-Module -ListAvailable -Name "Az.Accounts")) {
+    Install-Module -Name "Az.Accounts" -Scope CurrentUser
 }
-if ($null -eq (Get-Module -ListAvailable -Name "Az.Resources")) {  
-    Install-Module "Az.Resources" -Scope CurrentUser 
+if ($null -eq (Get-Module -ListAvailable -Name "Az.Resources")) {
+    Install-Module "Az.Resources" -Scope CurrentUser
 }
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.Resources"
@@ -26,13 +26,13 @@ if ( !$ctx ) {
 } else {
     if ( $TenantId -and $TenantId -ne $ctx.Tenant.TenantId ) {
         write-error "You are targeting tenant $tenantId but you are signed in to tennant $($ctx.Tenant.TenantId)"
-    }    
+    }
     $tenantId = $ctx.Tenant.TenantId
 }
 
 $tenant = Get-AzTenant
 $tenantDomainName =  ($tenant | Where { $_.Id -eq $tenantId }).Domains[0]
-    
+
 # Removes the applications
 Write-Host "Cleaning-up application from tenant '$tenantDomainName'"
 $appName = "Verifiable Credentials ASP.Net core sample"

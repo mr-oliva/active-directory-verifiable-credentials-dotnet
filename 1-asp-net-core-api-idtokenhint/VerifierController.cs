@@ -51,7 +51,7 @@ namespace AspNetCoreVerifiableCredentials
 
                 string jsonString = null;
                 //they payload template is loaded from disk and modified in the code below to make it easier to get started
-                //and having all config in a central location appsettings.json. 
+                //and having all config in a central location appsettings.json.
                 //if you want to manually change the payload in the json file make sure you comment out the code below which will modify it automatically
                 //
                 string payloadpath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location), PRESENTATIONPAYLOAD);
@@ -90,7 +90,7 @@ namespace AspNetCoreVerifiableCredentials
                 if (payload["requestedCredentials"][0]["acceptedIssuers"][0] != null)
                 {
                     payload["requestedCredentials"][0]["acceptedIssuers"][0] = AppSettings.IssuerAuthority;
-                }                
+                }
 
                 //modify the callback method to make it easier to debug with tools like ngrok since the URI changes all the time
                 //this way you don't need to modify the callback URL in the payload every time ngrok changes the URI
@@ -118,7 +118,7 @@ namespace AspNetCoreVerifiableCredentials
                 string response = null;
                 try
                 {
-                    //The VC Request API is an authenticated API. We need to clientid and secret (or certificate) to create an access token which 
+                    //The VC Request API is an authenticated API. We need to clientid and secret (or certificate) to create an access token which
                     //needs to be send as bearer to the VC Request API
                     var accessToken = await GetAccessToken();
                     if (accessToken.Item1 == String.Empty)
@@ -188,11 +188,11 @@ namespace AspNetCoreVerifiableCredentials
                 string content = await new System.IO.StreamReader(this.Request.Body).ReadToEndAsync();
                 _log.LogTrace("callback!: " + content);
                 this.Request.Headers.TryGetValue("api-key", out var apiKey);
-                if (this._apiKey != apiKey) 
+                if (this._apiKey != apiKey)
                 {
                     _log.LogTrace("api-key wrong or missing");
                     return new ContentResult() { StatusCode = (int)HttpStatusCode.Unauthorized, Content = "api-key wrong or missing" };
-                }               
+                }
                 JObject presentationResponse = JObject.Parse(content);
                 var state = presentationResponse["state"].ToString();
 
@@ -308,9 +308,9 @@ namespace AspNetCoreVerifiableCredentials
                 .Configure<LoggerFilterOptions>(options => options.MinLevel = Microsoft.Extensions.Logging.LogLevel.Debug);
             });
 
-            // With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the 
+            // With client credentials flows the scopes is ALWAYS of the shape "resource/.default", as the
             // application permissions need to be set statically (in the portal or by PowerShell), and then granted by
-            // a tenant administrator. 
+            // a tenant administrator.
             string[] scopes = new string[] { AppSettings.VCServiceScope };
 
             AuthenticationResult result = null;

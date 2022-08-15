@@ -37,11 +37,10 @@ namespace AspNetCoreVerifiableCredentials
 
             services.Configure<AppSettingsModel>(Configuration.GetSection("AppSettings"));
 
-
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time   
+                options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time
                 options.Cookie.IsEssential = true;
             });
             services.Configure<CookiePolicyOptions>(options =>

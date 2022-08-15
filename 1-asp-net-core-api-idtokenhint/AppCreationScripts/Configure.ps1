@@ -6,11 +6,11 @@ param(
 )
 
 # Pre-requisites
-if ($null -eq (Get-Module -ListAvailable -Name "Az.Accounts")) {  
-    Install-Module -Name "Az.Accounts" -Scope CurrentUser 
+if ($null -eq (Get-Module -ListAvailable -Name "Az.Accounts")) {
+    Install-Module -Name "Az.Accounts" -Scope CurrentUser
 }
-if ($null -eq (Get-Module -ListAvailable -Name "Az.Resources")) {  
-    Install-Module "Az.Resources" -Scope CurrentUser 
+if ($null -eq (Get-Module -ListAvailable -Name "Az.Resources")) {
+    Install-Module "Az.Resources" -Scope CurrentUser
 }
 Import-Module -Name "Az.Accounts"
 Import-Module -Name "Az.Resources"
@@ -57,7 +57,7 @@ if ( !$ctx ) {
 } else {
     if ( $TenantId -and $TenantId -ne $ctx.Tenant.TenantId ) {
         write-error "You are targeting tenant $tenantId but you are signed in to tennant $($ctx.Tenant.TenantId)"
-    }    
+    }
     $tenantId = $ctx.Tenant.TenantId
 }
 
@@ -74,7 +74,7 @@ if ($null -ne $clientAadApplication) {
 }
 Write-Host "Creating the AAD application ($appName)"
 $clientAadApplication = New-AzADApplication -DisplayName $appName `
-                                            -IdentifierUris "https://$tenantDomainName/vcaspnetcoresample" 
+                                            -IdentifierUris "https://$tenantDomainName/vcaspnetcoresample"
 $clientServicePrincipal = ($clientAadApplication | New-AzADServicePrincipal)
 Write-Host "AppId $($clientAadApplication.AppId)"
 # Generate a certificate or client_secret
@@ -89,13 +89,13 @@ if ( $ClientCertificate ) {
                                                  -KeyExportPolicy "Exportable" -KeySpec "Signature"
         $certData = [System.Convert]::ToBase64String($certificate.RawData, 'InsertLineBreaks')
     } else { # Mac/Linux - generate the self-signed certificate via openssl
-        & openssl genrsa -out ./aadappcert.pem 2048 
+        & openssl genrsa -out ./aadappcert.pem 2048
         & openssl req -new -key ./aadappcert.pem -out ./aadappcert.csr -subj "/$certSubject"
         & openssl x509 -req -days 365 -in ./aadappcert.csr -signkey ./aadappcert.pem -out ./aadappcert.crt
         $certData = Get-Content ./aadappcert.crt | Out-String
-        $certData =[Convert]::ToBase64String( [System.Text.Encoding]::Ascii.GetBytes($certData) )   
+        $certData =[Convert]::ToBase64String( [System.Text.Encoding]::Ascii.GetBytes($certData) )
     }
-    $clientAadApplication | New-AzADAppCredential -CertValue $certData        
+    $clientAadApplication | New-AzADAppCredential -CertValue $certData
 }
 if ( $ClientSecret ) {
     # Get a 1 year client secret for the client Application
@@ -122,7 +122,7 @@ $clientPortalUrl = "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps
 Set-Content -Value "<html><body><table>" -Path createdApps.html
 Add-Content -Value "<thead><tr><th>Application</th><th>AppId</th><th>Url in the Azure portal</th></tr></thead><tbody>" -Path createdApps.html
 Add-Content -Value "<tr><td>$appName</td><td>$($clientAadApplication.AppId)</td><td><a href='$clientPortalUrl'>$appName</a></td></tr>" -Path createdApps.html
-Add-Content -Value "</tbody></table></body></html>" -Path createdApps.html  
+Add-Content -Value "</tbody></table></body></html>" -Path createdApps.html
 
 # Update config file for the app
 $configFile = $pwd.Path + "$([IO.Path]::DirectorySeparatorChar)..$([IO.Path]::DirectorySeparatorChar)appsettings.json"

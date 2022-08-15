@@ -61,18 +61,18 @@ namespace AspNetCoreVerifiableCredentials
         /// </summary>
         /// <remarks>client credential applications can authenticate with AAD through two mechanisms: ClientSecret
         /// (which is a kind of application password: this property)
-        /// or a certificate previously shared with AzureAD during the application registration 
+        /// or a certificate previously shared with AzureAD during the application registration
         /// (and identified by the CertificateName property belows)
-        /// <remarks> 
+        /// <remarks>
         public string ClientSecret { get; set; }
         /// <summary>
         /// Name of a certificate in the user certificate store
         /// </summary>
         /// <remarks>client credential applications can authenticate with AAD through two mechanisms: ClientSecret
         /// (which is a kind of application password: the property above)
-        /// or a certificate previously shared with AzureAD during the application registration 
+        /// or a certificate previously shared with AzureAD during the application registration
         /// (and identified by this CertificateName property)
-        /// <remarks> 
+        /// <remarks>
         public string CertificateName { get; set; }
         /// <summary>
         /// Checks if the sample is configured for using ClientSecret or Certificate. This method is just for the sake of this sample.
@@ -112,6 +112,3 @@ namespace AspNetCoreVerifiableCredentials
     }
 
 }
-
-
-

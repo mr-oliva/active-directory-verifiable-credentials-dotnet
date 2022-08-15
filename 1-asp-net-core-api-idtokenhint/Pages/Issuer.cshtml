@@ -6,7 +6,7 @@
             <div style="text-align: center;">
                 <img src="VerifiedCredentialExpert-icon.png" height=200px; />
                 <h1>Verifiable Credential Expert Issuance</h1>
-        
+
             <button type="button" id="sign-in" class="button">GET CREDENTIAL</button>
             <div id="errorMessage"></div>
             <br />
@@ -59,7 +59,6 @@ signIn.addEventListener('click', () => {
                     document.getElementById('pinCodeText').style.display = "block";
                 }
 
-
                 var checkStatus = setInterval(function() {
                     fetch('api/issuer/issuance-response?id=' + respIssuanceReq.id)
                         .then(response => response.text())
@@ -96,7 +95,6 @@ signIn.addEventListener('click', () => {
 
             }
         }).catch(error => { console.log(error.message); document.getElementById("errorMessage").innerHTML += error.message; })
-});                
+});
             </script>
             </div>
-
